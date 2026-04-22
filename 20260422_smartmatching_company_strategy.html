@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스마트매칭 이용기업 분석 보고 | 2026.04.22</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --surface2: #f0f2f5;
+  --border: #dde1e9;
+  --accent: #1d60d4;
+  --accent2: #00956e;
+  --accent3: #d93025;
+  --accent4: #c47900;
+  --text: #1a1e2e;
+  --text2: #4a5168;
+  --text3: #8891a8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* HEADER */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 36px 48px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(29,96,212,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-badge {
+  display: inline-block;
+  background: rgba(29,96,212,0.08);
+  border: 1px solid rgba(29,96,212,0.2);
+  color: var(--accent);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+.header-meta {
+  font-size: 13px;
+  color: var(--text2);
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.header-meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); display: inline-block; }
+
+/* BM TIMELINE */
+.bm-timeline {
+  padding: 24px 48px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+.bm-timeline h3 {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: 'Noto Sans KR', sans-serif;
+  margin-bottom: 16px;
+}
+.timeline-track {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.timeline-seg {
+  padding: 14px 20px;
+  flex: 1;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.timeline-seg:last-child { border-right: none; }
+.timeline-seg.seg1 { background: rgba(217,48,37,0.05); }
+.timeline-seg.seg2 { background: rgba(196,121,0,0.05); flex: 0.4; }
+.timeline-seg.seg3 { background: rgba(29,96,212,0.06); border: 1px solid rgba(29,96,212,0.15); }
+.seg-label {
+  font-size: 10px;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+.seg-period {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+.seg-desc { font-size: 12px; color: var(--text); font-weight: 500; }
+.seg-stat { font-size: 11px; color: var(--text2); margin-top: 6px; }
+.seg-stat strong { color: var(--accent); font-family: 'Noto Sans KR', sans-serif; }
+.seg3 .seg-desc { color: var(--accent); }
+.alert-note {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: rgba(196,121,0,0.06);
+  border: 1px solid rgba(196,121,0,0.2);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--accent4);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* MAIN LAYOUT */
+.main {
+  padding: 32px 48px;
+  max-width: 1400px;
+}
+
+/* SECTION */
+.section {
+  margin-bottom: 48px;
+}
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section-num {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+}
+.section-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+.section-subtitle {
+  font-size: 12px;
+  color: var(--text2);
+  margin-left: auto;
+}
+
+/* KPI CARDS */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.kpi-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.kpi-card:hover { border-color: rgba(29,96,212,0.25); }
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+  opacity: 0.4;
+}
+.kpi-card.green::after { background: var(--accent2); }
+.kpi-card.red::after { background: var(--accent3); }
+.kpi-card.yellow::after { background: var(--accent4); }
+.kpi-label {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: 'Noto Sans KR', sans-serif;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+.kpi-value {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.kpi-value.blue { color: var(--accent); }
+.kpi-value.green { color: var(--accent2); }
+.kpi-value.red { color: var(--accent3); }
+.kpi-value.yellow { color: var(--accent4); }
+.kpi-unit { font-size: 14px; font-weight: 400; color: var(--text2); }
+.kpi-desc { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+/* HYPOTHESIS SECTION */
+.hypothesis-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.hyp-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+}
+.hyp-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.hyp-card-title { font-size: 13px; font-weight: 700; color: var(--text); }
+.hyp-tag {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0,149,110,0.08);
+  border: 1px solid rgba(0,149,110,0.2);
+  color: var(--accent2);
+}
+.hyp-tag.warn {
+  background: rgba(196,121,0,0.08);
+  border-color: rgba(196,121,0,0.2);
+  color: var(--accent4);
+}
+.compare-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.compare-item {
+  background: var(--surface2);
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+.compare-item.highlight {
+  border-color: rgba(29,96,212,0.3);
+  background: rgba(29,96,212,0.04);
+}
+.compare-label {
+  font-size: 10px;
+  color: var(--text3);
+  margin-bottom: 6px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.compare-val {
+  font-size: 28px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  line-height: 1;
+}
+.compare-val.blue { color: var(--accent); }
+.compare-val.sub { color: var(--text2); font-size: 22px; }
+.compare-unit { font-size: 12px; color: var(--text2); margin-top: 2px; }
+.hyp-insight {
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: rgba(29,96,212,0.04);
+  border: 1px solid rgba(29,96,212,0.12);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+.hyp-insight strong { color: var(--accent2); }
+
+/* TABLE */
+.table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+thead th {
+  background: var(--surface2);
+  padding: 12px 16px;
+  font-size: 11px;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+thead th.right { text-align: right; }
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+tbody td {
+  padding: 11px 16px;
+  font-size: 13px;
+  color: var(--text);
+}
+tbody td.right { text-align: right; font-family: 'Noto Sans KR', sans-serif; }
+tbody td.mono { font-family: 'Noto Sans KR', sans-serif; }
+.rank-badge {
+  display: inline-flex;
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  background: #f0f2f5;
+  color: var(--text3);
+  font-size: 11px;
+  font-family: 'Noto Sans KR', sans-serif;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+.rank-badge.top1 { background: rgba(196,121,0,0.1); color: var(--accent4); }
+.rank-badge.top2 { background: rgba(100,110,135,0.1); color: #7a8099; }
+.rank-badge.top3 { background: rgba(160,80,30,0.1); color: #a0501e; }
+.bar-cell { display: flex; align-items: center; gap: 10px; }
+.bar-bg {
+  flex: 1; height: 6px; background: #e4e7ef; border-radius: 3px; overflow: hidden;
+}
+.bar-fill {
+  height: 100%; border-radius: 3px; background: var(--accent);
+  transition: width 0.8s ease;
+}
+.bar-fill.green { background: var(--accent2); }
+.bar-fill.yellow { background: var(--accent4); }
+.bar-val { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; color: var(--text); min-width: 50px; text-align: right; }
+.tag-Y {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(0,149,110,0.08);
+  border: 1px solid rgba(0,149,110,0.2);
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--accent2);
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.tag-N {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(217,48,37,0.06);
+  border: 1px solid rgba(217,48,37,0.15);
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--accent3);
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* CHART CONTAINER */
+.chart-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+}
+.chart-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.chart-sub {
+  font-size: 11px;
+  color: var(--text3);
+  margin-bottom: 20px;
+}
+.chart-container { position: relative; }
+
+/* PRODUCT */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+.product-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+.product-card.main {
+  border-color: rgba(29,96,212,0.25);
+  background: rgba(29,96,212,0.03);
+}
+.product-name { font-size: 11px; color: var(--text2); margin-bottom: 10px; min-height: 28px; line-height: 1.4; }
+.product-count { font-size: 28px; font-weight: 900; color: var(--accent); font-variant-numeric: tabular-nums; }
+.product-pct { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+/* CHURN STRATEGY */
+.strategy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.strategy-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+}
+.strategy-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.strategy-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.strategy-icon.blue { background: rgba(29,96,212,0.08); }
+.strategy-icon.green { background: rgba(0,149,110,0.08); }
+.strategy-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.strategy-count { font-size: 11px; color: var(--text2); margin-top: 2px; }
+.strategy-body { font-size: 13px; color: var(--text2); line-height: 1.7; }
+.strategy-body strong { color: var(--text); }
+.strategy-steps { list-style: none; margin-top: 14px; }
+.strategy-steps li {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text2);
+}
+.strategy-steps li:last-child { border-bottom: none; }
+.step-num {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10px;
+  color: var(--accent);
+  background: rgba(29,96,212,0.08);
+  border-radius: 4px;
+  padding: 1px 6px;
+  height: fit-content;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+/* ACTION LIST */
+.action-list { list-style: none; }
+.action-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.action-item:last-child { border-bottom: none; }
+.action-priority {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.priority-now { background: rgba(217,48,37,0.08); border: 1px solid rgba(217,48,37,0.2); color: var(--accent3); }
+.priority-soon { background: rgba(196,121,0,0.08); border: 1px solid rgba(196,121,0,0.2); color: var(--accent4); }
+.priority-plan { background: rgba(29,96,212,0.07); border: 1px solid rgba(29,96,212,0.18); color: var(--accent); }
+.action-content { flex: 1; }
+.action-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.action-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+.action-owner {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+  margin-top: 4px;
+}
+
+/* FOOTER */
+.footer {
+  padding: 24px 48px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text3);
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--surface);
+}
+
+/* UTIL */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.mt-16 { margin-top: 16px; }
+.text-accent { color: var(--accent); }
+.text-green { color: var(--accent2); }
+.text-red { color: var(--accent3); }
+.text-yellow { color: var(--accent4); }
+
+.disclaimer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--accent4);
+  background: rgba(196,121,0,0.06);
+  border: 1px solid rgba(196,121,0,0.15);
+  border-radius: 4px;
+  padding: 4px 10px;
+  margin-left: auto;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-badge">INTERNAL · CONFIDENTIAL · 2026.04.22</div>
+  <h1>스마트매칭 이용기업 분석 보고</h1>
+  <div class="header-meta">
+    <span><span class="dot"></span> 분석 기간: 2024.09 ~ 2026.04</span>
+    <span>|</span>
+    <span>분석 대상: 총 3,203개 기업 · 4,342건 공고</span>
+    <span>|</span>
+    <span>데이터 기준일: 2026.04.21</span>
+  </div>
+</div>
+
+<!-- BM TIMELINE -->
+<div class="bm-timeline">
+  <h3>BM 변경 히스토리 — 분석 구간 정의</h3>
+  <div class="timeline-track">
+    <div class="timeline-seg seg1">
+      <div class="seg-label">PHASE 1</div>
+      <div class="seg-period">2024.09.06 ~ 2026.01.29</div>
+      <div class="seg-desc">선불 유료 구조</div>
+      <div class="seg-stat">구매 후 제안 발송 · 정보 전면 공개 / 공고 <strong>2,699건</strong> · 구매 <strong>193건</strong></div>
+      <div class="seg-stat" style="margin-top:6px">알림톡: 구매O → <strong>3회차까지</strong> / 구매X(쿠폰·무료) → <strong>1~2회차</strong></div>
+    </div>
+    <div class="timeline-seg seg2">
+      <div class="seg-label">PHASE 2</div>
+      <div class="seg-period">01.30 ~ 02.23</div>
+      <div class="seg-desc">무료 전면 공개 (중간 개발 단계)</div>
+      <div class="seg-stat">무료 제안 · 기본정보 전면 공개 · 추가 구매 유인 없음 / 공고 <strong>506건</strong> · 구매 <strong>24건</strong></div>
+      <div class="seg-stat" style="margin-top:6px">알림톡: <strong>미발송</strong> (무료 전환 시작)</div>
+    </div>
+    <div class="timeline-seg seg3">
+      <div class="seg-label">PHASE 3 · 현재 BM</div>
+      <div class="seg-period">02.24 ~ 현재</div>
+      <div class="seg-desc">현행 BM (기본정보 비공개)</div>
+      <div class="seg-stat">무료 제안 · 기본정보 비공개 → 유료 전환 유도 / 공고 <strong>1,137건</strong> · 구매 <strong>80건</strong></div>
+      <div class="seg-stat" style="margin-top:6px">알림톡: 구매O → <strong>3회차까지</strong> / 구매X → <strong>미발송</strong></div>
+    </div>
+  </div>
+  <div class="alert-note">
+    ⚠ 현재 BM 적용 기간은 약 <strong>2개월</strong>로 통계적 판단에 한계가 있습니다. 본 보고서는 전체 기간 데이터를 통합 분석하되, 현재 BM 구간을 별도 강조하여 제시합니다.
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SECTION 1: KPI -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">핵심 성과 지표 요약</span>
+      <span class="section-subtitle">전체 기간 기준 · 공고 단위 집계</span>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">총 이용 기업 수</div>
+        <div class="kpi-value blue">3,203<span class="kpi-unit">개</span></div>
+        <div class="kpi-desc">스마트매칭 공고 등록 기업</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">총 분석 공고 수</div>
+        <div class="kpi-value">4,342<span class="kpi-unit">건</span></div>
+        <div class="kpi-desc">제안 발송 이력 보유 공고</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">총 제안 발송 수</div>
+        <div class="kpi-value green">3,816<span class="kpi-unit">만</span></div>
+        <div class="kpi-desc">누적 인재 제안 발송 (38,160,000건)</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">총 수락 수</div>
+        <div class="kpi-value green">38,631<span class="kpi-unit">건</span></div>
+        <div class="kpi-desc">인재가 제안을 수락한 누적 건수</div>
+      </div>
+    </div>
+    <div class="kpi-grid" style="margin-top:16px">
+      <div class="kpi-card">
+        <div class="kpi-label">공고당 평균 수락수</div>
+        <div class="kpi-value">8.9<span class="kpi-unit">건</span></div>
+        <div class="kpi-desc">구매O <strong class="text-accent">13.7건</strong> · 구매X <strong style="color:var(--text2)">8.5건</strong></div>
+      </div>
+      <div class="kpi-card yellow">
+        <div class="kpi-label">유료상품 구매 공고</div>
+        <div class="kpi-value yellow">297<span class="kpi-unit">건</span></div>
+        <div class="kpi-desc">전체 공고 대비 구매전환율 <strong class="text-yellow">6.8%</strong></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">재구매 기업</div>
+        <div class="kpi-value">39<span class="kpi-unit">개</span></div>
+        <div class="kpi-desc">구매기업 194개 중 재구매 비율 <strong class="text-accent">20.1%</strong></div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-label">이탈 기업 (1년↑ 비로그인)</div>
+        <div class="kpi-value red">304<span class="kpi-unit">개</span></div>
+        <div class="kpi-desc">전체 기업의 <strong class="text-red">9.5%</strong> · 과거 구매이력 기업 <strong class="text-red">7개</strong></div>
+      </div>
+    </div>
+
+    <!-- 핵심 인사이트 요약 -->
+    <div style="margin-top:20px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 24px;">
+      <div style="font-size:12px;color:var(--text3);font-family:'Noto Sans KR',sans-serif;letter-spacing:0.06em;margin-bottom:14px;font-weight:500;">💡 핵심 인사이트 요약</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+        <div style="padding:14px;background:rgba(29,96,212,0.04);border:1px solid rgba(29,96,212,0.12);border-radius:8px;">
+          <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:6px">수락 경험 → 구매 전환</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">구매 기업의 공고당 평균 수락수(13.7건)가 미구매 기업(8.5건) 대비 <strong style="color:var(--text)">+61% 높음</strong>. 수락 경험이 많을수록 유료 전환 가능성 상승.</div>
+        </div>
+        <div style="padding:14px;background:rgba(0,149,110,0.04);border:1px solid rgba(0,149,110,0.12);border-radius:8px;">
+          <div style="font-size:12px;font-weight:700;color:var(--accent2);margin-bottom:6px">현재 BM 공고 빠른 확산</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">현재 BM 적용 <strong style="color:var(--text)">약 2개월</strong> 만에 1,137건 공고 발생. 구매전환율(7.0%)은 선불유료 구간(7.2%)과 동일 수준 유지.</div>
+        </div>
+        <div style="padding:14px;background:rgba(217,48,37,0.04);border:1px solid rgba(217,48,37,0.12);border-radius:8px;">
+          <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:6px">이탈 기업 비중 주목 필요</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">1년↑ 비로그인 이탈 기업 <strong style="color:var(--text)">304개(전체의 9.5%)</strong>. 이 중 과거 구매 이력 보유 기업 7개는 재유입 시 즉시 재구매 가능성 높은 최우선 영업 대상.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: HYPOTHESIS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">가설 검증 — 수락 수가 높을수록 유료 구매로 이어지는가?</span>
+      <div class="disclaimer">⚠ 현재BM 기준 n=80, 경향 관찰 수준</div>
+    </div>
+    <div class="hypothesis-grid">
+      <div class="hyp-card">
+        <div class="hyp-card-header">
+          <span class="hyp-card-title">📊 전체 기간 비교</span>
+          <span class="hyp-tag">방향성 일치</span>
+        </div>
+        <div class="compare-row">
+          <div class="compare-item highlight">
+            <div class="compare-label">구매 O (297건)</div>
+            <div class="compare-val blue">13.7</div>
+            <div class="compare-unit">공고당 평균 수락수</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-label">구매 X (4,045건)</div>
+            <div class="compare-val sub">8.5</div>
+            <div class="compare-unit">공고당 평균 수락수</div>
+          </div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-item highlight">
+            <div class="compare-label">구매 O — 총지원자</div>
+            <div class="compare-val blue">18.6</div>
+            <div class="compare-unit">공고당 평균 총지원자</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-label">구매 X — 총지원자</div>
+            <div class="compare-val sub">12.9</div>
+            <div class="compare-unit">공고당 평균 총지원자</div>
+          </div>
+        </div>
+        <div class="hyp-insight">
+          구매 기업의 평균 수락수가 미구매 기업 대비 <strong>+61% 높음</strong>. 총지원자 수도 구매 기업에서 유의미하게 높아, 서비스 효과를 경험한 기업일수록 전환하는 경향 존재. 단, 전체 기간은 BM별 알림톡 발송 조건이 혼재되어 있어 단순 비교에 유의 필요.
+        </div>
+      </div>
+      <div class="hyp-card">
+        <div class="hyp-card-header">
+          <span class="hyp-card-title">🎯 현재 BM 구간만 (02.24~)</span>
+          <span class="hyp-tag">격차 더욱 명확</span>
+        </div>
+        <div class="compare-row">
+          <div class="compare-item highlight">
+            <div class="compare-label">구매 O (80건)</div>
+            <div class="compare-val blue">11.6</div>
+            <div class="compare-unit">공고당 평균 수락수</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-label">구매 X (1,057건)</div>
+            <div class="compare-val sub">4.3</div>
+            <div class="compare-unit">공고당 평균 수락수</div>
+          </div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-item highlight">
+            <div class="compare-label">구매 O — 총지원자</div>
+            <div class="compare-val blue">15.2</div>
+            <div class="compare-unit">공고당 평균 총지원자</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-label">구매 X — 총지원자</div>
+            <div class="compare-val sub">7.1</div>
+            <div class="compare-unit">공고당 평균 총지원자</div>
+          </div>
+        </div>
+        <div class="hyp-insight">
+          현재 BM에서 구매 기업의 수락수가 미구매 대비 <strong>약 2.7배 높음</strong>. 이 격차의 핵심 요인은 <strong>알림톡 발송 여부</strong>로, 구매 기업에는 3회차까지 알림톡이 발송되는 반면 미구매 기업에는 미발송된다. 개인회원이 메일·푸시만으로 제안 도착을 인지하기 어렵다는 점에서, 알림톡이 수락 전환의 실질적 유인임을 시사. 단, 표본(80건) 제한으로 통계적 유의성 단정은 유보.
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-row mt-16">
+      <div class="chart-card">
+        <div class="chart-title">BM 구간별 구매 전환율</div>
+        <div class="chart-sub">공고 기준 유료상품 구매 비율</div>
+        <div class="chart-container" style="height:200px">
+          <canvas id="chartBM"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">구매 여부별 평균 수락수 비교</div>
+        <div class="chart-sub">전체 기간 vs 현재 BM 구간</div>
+        <div class="chart-container" style="height:200px">
+          <canvas id="chartAccept"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: INDUSTRY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">기업의 업종별 수락 현황 및 구매 전환 분석</span>
+      <span class="section-subtitle">영업 타겟 업종 우선순위 도출 근거</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>순위</th>
+            <th>업종</th>
+            <th class="right">공고 수</th>
+            <th>총 수락수</th>
+            <th class="right">평균 수락수</th>
+            <th class="right">구매 공고수</th>
+            <th>구매 전환율</th>
+            <th>영업 우선도</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="rank-badge top1">1</span></td>
+            <td><strong>제조업</strong></td>
+            <td class="right mono">1,305</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:100%"></div></div>
+                <span class="bar-val">10,187</span>
+              </div>
+            </td>
+            <td class="right mono">7.81</td>
+            <td class="right mono">90</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill green" style="width:63%"></div></div>
+                <span class="bar-val">6.9%</span>
+              </div>
+            </td>
+            <td><span class="tag-Y">HIGH</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-badge top2">2</span></td>
+            <td><strong>정보통신업</strong></td>
+            <td class="right mono">531</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:70%"></div></div>
+                <span class="bar-val">7,087</span>
+              </div>
+            </td>
+            <td class="right mono text-accent">13.35</td>
+            <td class="right mono">36</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill green" style="width:62%"></div></div>
+                <span class="bar-val">6.8%</span>
+              </div>
+            </td>
+            <td><span class="tag-Y">HIGH</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-badge top3">3</span></td>
+            <td><strong>도매·소매업</strong></td>
+            <td class="right mono">534</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:45%"></div></div>
+                <span class="bar-val">4,533</span>
+              </div>
+            </td>
+            <td class="right mono">8.49</td>
+            <td class="right mono">26</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill green" style="width:45%"></div></div>
+                <span class="bar-val">4.9%</span>
+              </div>
+            </td>
+            <td><span class="tag-N">MID</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-badge">4</span></td>
+            <td>전문·과학기술서비스업</td>
+            <td class="right mono">344</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:37%"></div></div>
+                <span class="bar-val">3,754</span>
+              </div>
+            </td>
+            <td class="right mono text-accent">10.91</td>
+            <td class="right mono">30</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill green" style="width:79%"></div></div>
+                <span class="bar-val">8.7%</span>
+              </div>
+            </td>
+            <td><span class="tag-Y">HIGH</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-badge">5</span></td>
+            <td>방송·광고·문화 서비스업</td>
+            <td class="right mono">252</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:33%"></div></div>
+                <span class="bar-val">3,403</span>
+              </div>
+            </td>
+            <td class="right mono text-accent">13.50</td>
+            <td class="right mono">28</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill yellow" style="width:100%"></div></div>
+                <span class="bar-val">11.1%</span>
+              </div>
+            </td>
+            <td><span class="tag-Y">★ 최우선</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-badge">6</span></td>
+            <td>건설·토목업</td>
+            <td class="right mono">490</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:28%"></div></div>
+                <span class="bar-val">2,872</span>
+              </div>
+            </td>
+            <td class="right mono">5.86</td>
+            <td class="right mono">28</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill green" style="width:52%"></div></div>
+                <span class="bar-val">5.7%</span>
+              </div>
+            </td>
+            <td><span class="tag-N">MID</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-badge">7</span></td>
+            <td>유통·물류·무역업</td>
+            <td class="right mono">171</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:20%"></div></div>
+                <span class="bar-val">2,035</span>
+              </div>
+            </td>
+            <td class="right mono text-accent">11.90</td>
+            <td class="right mono">21</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill yellow" style="width:100%"></div></div>
+                <span class="bar-val">12.3%</span>
+              </div>
+            </td>
+            <td><span class="tag-Y">★ 최우선</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-badge">8</span></td>
+            <td>공공·의료·사회기반사업</td>
+            <td class="right mono">225</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:14%"></div></div>
+                <span class="bar-val">1,430</span>
+              </div>
+            </td>
+            <td class="right mono">6.36</td>
+            <td class="right mono">17</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill green" style="width:69%"></div></div>
+                <span class="bar-val">7.6%</span>
+              </div>
+            </td>
+            <td><span class="tag-N">MID</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-badge">9</span></td>
+            <td>교육서비스업</td>
+            <td class="right mono">135</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:9%"></div></div>
+                <span class="bar-val">960</span>
+              </div>
+            </td>
+            <td class="right mono">7.11</td>
+            <td class="right mono">6</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill green" style="width:40%"></div></div>
+                <span class="bar-val">4.4%</span>
+              </div>
+            </td>
+            <td><span class="tag-N">LOW</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-badge">10</span></td>
+            <td>개인·가사서비스업</td>
+            <td class="right mono">133</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:9%"></div></div>
+                <span class="bar-val">915</span>
+              </div>
+            </td>
+            <td class="right mono">6.88</td>
+            <td class="right mono">7</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill green" style="width:48%"></div></div>
+                <span class="bar-val">5.3%</span>
+              </div>
+            </td>
+            <td><span class="tag-N">LOW</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert-note mt-16">
+      💡 <span><strong>영업 타겟 핵심 인사이트:</strong> 수락 절대수(규모)와 구매전환율(효율)을 동시에 고려할 때, <strong>유통·물류·무역업(12.3%)</strong>과 <strong>방송·광고·문화 서비스업(11.1%)</strong>이 전환율 측면에서 최우선 영업 대상. 제조업·정보통신업은 수락 규모가 크므로 대량 영업 접근에 유리.</span>
+    </div>
+  </div>
+
+  <!-- SECTION 4: JOB TYPE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">공고의 직종 3뎁스별 수락 수 Top 20</span>
+      <span class="section-subtitle">영업 메시지 설계의 핵심 직종군 파악</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>순위</th>
+            <th>직종 (3뎁스)</th>
+            <th class="right">관련 공고 수</th>
+            <th>총 수락수</th>
+            <th class="right">구매 공고수</th>
+          </tr>
+        </thead>
+        <tbody id="job3-tbody">
+          <!-- JS로 삽입 -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 5: REPURCHASE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">재구매 기업 현황 Top 15</span>
+      <span class="section-subtitle">지속 구매 기업 프로파일 — 전체 이용 공고 기준 수락 합계</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>순위</th>
+            <th>기업명</th>
+            <th>업종</th>
+            <th class="right">구매 공고수</th>
+            <th>전체 수락 합계</th>
+            <th class="right">공고당 수락수</th>
+          </tr>
+        </thead>
+        <tbody id="repurchase-tbody">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 6: PRODUCT -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <span class="section-title">상품별 구매 현황 및 실매출 분석</span>
+      <span class="section-subtitle">실매출금액 기준 · 2024.09 ~ 2026.04</span>
+    </div>
+
+    <!-- 전체 매출 KPI -->
+    <div class="kpi-grid" style="margin-bottom:20px">
+      <div class="kpi-card blue">
+        <div class="kpi-label">통합 총 실매출</div>
+        <div class="kpi-value blue">3,288<span class="kpi-unit">만원</span></div>
+        <div class="kpi-desc">362건 · 2024.09~2026.04 누적</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">스마트매칭/오퍼 (포지션제안)</div>
+        <div class="kpi-value">1,815<span class="kpi-unit">만원</span></div>
+        <div class="kpi-desc">216건 · 전체의 <strong class="text-accent">55.2%</strong></div>
+      </div>
+      <div class="kpi-card yellow">
+        <div class="kpi-label">채용패키지 계열</div>
+        <div class="kpi-value yellow">1,426<span class="kpi-unit">만원</span></div>
+        <div class="kpi-desc">144건 · 전체의 <strong class="text-yellow">43.4%</strong></div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-label">스마트매칭Pro (입사지원제의)</div>
+        <div class="kpi-value red">10<span class="kpi-unit">만원</span></div>
+        <div class="kpi-desc">1건 · (주)바이오다인 1개사</div>
+      </div>
+    </div>
+
+    <!-- BM 구간별 비교 카드 -->
+    <div class="chart-row" style="margin-bottom:20px">
+      <!-- 선불유료 -->
+      <div class="hyp-card" style="border-color:rgba(217,48,37,0.2);">
+        <div class="hyp-card-header">
+          <span class="hyp-card-title">PHASE 1 · 선불유료 (2024.09~2026.01.29)</span>
+          <span class="hyp-tag" style="background:rgba(217,48,37,0.07);border-color:rgba(217,48,37,0.2);color:var(--accent3);">스마트오퍼 단일 구조</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(29,96,212,0.04);border-radius:6px;border:1px solid rgba(29,96,212,0.15)">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text)">스마트오퍼 (건수제 · 포지션제안)</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">1건 88,000원 ~ 30건 1,848,000원 · 건당 평균 85,336원</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;margin-left:16px">
+              <div style="font-size:20px;font-weight:900;color:var(--accent)">15,107,083원</div>
+              <div style="font-size:11px;color:var(--text3)">176건 · 매출 비중 93.2%</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface2);border-radius:6px;border:1px solid var(--border)">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text)">채용패키지 (전환기간 시범 도입)</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">2026.01.05~01.29 · 베이직 계열</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;margin-left:16px">
+              <div style="font-size:20px;font-weight:900;color:var(--text2)">1,109,233원</div>
+              <div style="font-size:11px;color:var(--text3)">13건 · 6.8%</div>
+            </div>
+          </div>
+        </div>
+        <div class="hyp-insight">스마트오퍼(포지션제안) 단일 상품이 <strong>매출 93%</strong> 차지. 건수제 구조로 대량 구매 시 단가 하락 구조.</div>
+      </div>
+
+      <!-- 현재BM -->
+      <div class="hyp-card" style="border-color:rgba(29,96,212,0.2);">
+        <div class="hyp-card-header">
+          <span class="hyp-card-title">PHASE 3 · 현재BM (2026.02.24~)</span>
+          <span class="hyp-tag">채용패키지 비중 79%로 역전</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface2);border-radius:6px;border:1px solid var(--border)">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text)">베이직 채용패키지Pro <span style="font-size:10px;color:var(--text3)">(채용광고 강화)</span></div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">건당 평균 128,391원</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;margin-left:16px">
+              <div style="font-size:20px;font-weight:900;color:var(--text)">4,878,872원</div>
+              <div style="font-size:11px;color:var(--text3)">38건 · 36.1%</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface2);border-radius:6px;border:1px solid var(--border)">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text)">베이직 채용패키지</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">건당 평균 119,706원</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;margin-left:16px">
+              <div style="font-size:20px;font-weight:900;color:var(--text)">3,351,781원</div>
+              <div style="font-size:11px;color:var(--text3)">28건 · 24.8%</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(29,96,212,0.04);border-radius:6px;border:1px solid rgba(29,96,212,0.15)">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text)">스마트매칭 <span style="font-size:10px;color:var(--accent2)">★ 핵심 BM 상품</span></div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">1건 99,000원 · 건당 평균 73,179원 · 포지션제안+알림톡+기본정보열람</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;margin-left:16px">
+              <div style="font-size:20px;font-weight:900;color:var(--accent)">2,634,442원</div>
+              <div style="font-size:11px;color:var(--text3)">36건 · 19.5%</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface2);border-radius:6px;border:1px solid var(--border)">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text)">베이직 채용패키지 스타터팩</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">건당 평균 65,427원 (최저가 진입)</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;margin-left:16px">
+              <div style="font-size:20px;font-weight:900;color:var(--text)">2,093,655원</div>
+              <div style="font-size:11px;color:var(--text3)">32건 · 15.5%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 핵심 쟁점 박스 -->
+        <div style="background:rgba(217,48,37,0.04);border:1px solid rgba(217,48,37,0.15);border-radius:8px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:8px">⚠ 경영진 검토 필요 — 매출 구조 쟁점</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.8">
+            현재BM 실매출의 <strong style="color:var(--text)">채용패키지 계열 비중 79.4%</strong>로, 스마트매칭(핵심 BM 상품) 매출은 19.5%에 불과. 채용광고 패키지가 공고등록 하단 노출을 통해 자연 구매로 이어지는 구조로, <strong style="color:var(--text)">스마트매칭 BM 고유의 매출 기여도가 희석될 가능성 존재.</strong><br><br>
+            단, 스마트매칭Pro(입사지원제의)는 <strong style="color:var(--accent3)">1건(바이오다인)에 그쳐</strong> 사실상 미판매 상태. Pro 상품의 가격 저항 또는 인지도 문제 여부 별도 검토 필요.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 전체 매출 비교 (BM 구간별 월평균) -->
+    <div class="kpi-grid" style="margin-bottom:20px;margin-top:4px">
+      <div class="kpi-card" style="border-bottom:3px solid var(--accent3);">
+        <div class="kpi-label">선불유료 월평균 매출</div>
+        <div class="kpi-value" style="font-size:24px">539<span class="kpi-unit">만원</span></div>
+        <div class="kpi-desc">채용광고 결합 + 스마트오퍼 / 17개월 · 총 9,160만원</div>
+      </div>
+      <div class="kpi-card" style="border-bottom:3px solid var(--accent4);">
+        <div class="kpi-label">무료전면공개 월평균</div>
+        <div class="kpi-value" style="font-size:24px">412<span class="kpi-unit">만원</span></div>
+        <div class="kpi-desc">채용광고 결합 + 스마트매칭 / 1개월 · 총 412만원</div>
+      </div>
+      <div class="kpi-card green" style="border-bottom:3px solid var(--accent2);">
+        <div class="kpi-label">현재BM 월평균 매출</div>
+        <div class="kpi-value green" style="font-size:24px">928<span class="kpi-unit">만원</span></div>
+        <div class="kpi-desc">5개 상품군 합산 / 2개월 · 총 1,855만원</div>
+      </div>
+      <div class="kpi-card" style="border-bottom:3px solid var(--accent);">
+        <div class="kpi-label">선불유료 대비 현재BM</div>
+        <div class="kpi-value blue" style="font-size:24px">+72<span class="kpi-unit">%</span></div>
+        <div class="kpi-desc">월평균 539만 → 928만원 · 표본(2개월) 한계 유의</div>
+      </div>
+    </div>
+
+    <!-- 월별 매출 추이 차트 -->
+    <div class="chart-card" style="margin-bottom:20px">
+      <div class="chart-title">월별 전체 실매출 추이 (상품명 기준)</div>
+      <div class="chart-sub">2024.09 ~ 2026.04 · 전체 채널 합산 · 현재BM 전환 후 매출 급증 확인</div>
+      <div class="chart-container" style="height:260px">
+        <canvas id="chartMonthly"></canvas>
+      </div>
+    </div>
+
+    <!-- 전체 상품 가격 요약 테이블 -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>상품명</th>
+            <th>제안 방식</th>
+            <th>기간/건수</th>
+            <th class="right">판매가</th>
+            <th class="right">건당 평균 실매출</th>
+            <th>알림톡</th>
+            <th>기본정보 열람</th>
+            <th>판매 현황</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>스마트오퍼</strong></td>
+            <td>포지션제안</td>
+            <td class="mono">1건~30건</td>
+            <td class="right mono">88,000~1,848,000원</td>
+            <td class="right mono">85,336원</td>
+            <td><span class="tag-Y">O</span></td>
+            <td><span class="tag-Y">O</span></td>
+            <td>선불유료 주력</td>
+          </tr>
+          <tr style="background:rgba(29,96,212,0.02)">
+            <td><strong>스마트매칭 ★</strong></td>
+            <td>포지션제안</td>
+            <td class="mono">1건</td>
+            <td class="right mono">99,000원</td>
+            <td class="right mono">73,179원</td>
+            <td><span class="tag-Y">O (3회차)</span></td>
+            <td><span class="tag-Y">O</span></td>
+            <td>현재BM 핵심 · 36건</td>
+          </tr>
+          <tr>
+            <td><strong>스마트매칭Pro</strong></td>
+            <td>입사지원제의</td>
+            <td class="mono">1건</td>
+            <td class="right mono">1,100,000원</td>
+            <td class="right mono">100,000원</td>
+            <td><span class="tag-Y">O (3회차)</span></td>
+            <td><span class="tag-Y">O</span></td>
+            <td style="color:var(--accent3)">사실상 미판매 · 1건</td>
+          </tr>
+          <tr style="background:rgba(196,121,0,0.02)">
+            <td><strong>베이직 채용패키지 스타터팩 ★</strong></td>
+            <td>—</td>
+            <td class="mono">2일</td>
+            <td class="right mono">49,000원</td>
+            <td class="right mono">65,427원</td>
+            <td><span class="tag-Y">O</span></td>
+            <td><span class="tag-Y">O</span></td>
+            <td>현재BM 최다 · 32건</td>
+          </tr>
+          <tr>
+            <td><strong>베이직 채용패키지</strong></td>
+            <td>—</td>
+            <td class="mono">2일</td>
+            <td class="right mono">96,000원</td>
+            <td class="right mono">119,706원</td>
+            <td><span class="tag-Y">O</span></td>
+            <td><span class="tag-Y">O</span></td>
+            <td>현재BM · 28건</td>
+          </tr>
+          <tr>
+            <td><strong>베이직 채용패키지Pro</strong></td>
+            <td>—</td>
+            <td class="mono">2일</td>
+            <td class="right mono">96,000원+</td>
+            <td class="right mono">128,391원</td>
+            <td><span class="tag-Y">O</span></td>
+            <td><span class="tag-Y">O</span></td>
+            <td>현재BM 최고매출 · 38건</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert-note mt-16">
+      💡 <span><strong>전체 상품 합산 기준</strong> 현재BM 월평균 매출(928만원)은 선불유료 구간(539만원) 대비 <strong>약 +72% 증가</strong>했으나, 증가분의 대부분은 공고등록 하단 채용광고 패키지 다양화에서 발생. 스마트매칭 계열 단품 실매출은 현재BM 월평균의 약 23%에 불과하며, <strong>실질적으로는 채용광고를 더 판 것으로 해석하는 것이 타당</strong>. 스마트매칭 BM 고유의 가치를 독립적으로 증명하려면 단품 매출의 유의미한 성장이 필요하나, 현재 스마트매칭(99,000원)이 베이직 패키지(96,000원, 채용광고+스마트매칭+AI인성검사 5건 포함)보다 비싼 역설적 가격 구조로 단품 선택 유인이 없는 상태. 베이직 외 패키지(스마트·로얄 등)는 판매 실적이 전무해 <strong>상품 라인업 간소화 및 스마트매칭 단품의 재포지셔닝이 중기 핵심 과제</strong>.</span>
+    </div>
+  </div>
+
+  <!-- SECTION 7: CHURN STRATEGY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <span class="section-title">이탈 기업 재유입 전략</span>
+      <span class="section-subtitle">1년 이상 비로그인 기업 304개 대상</span>
+    </div>
+    <div class="strategy-grid">
+      <div class="strategy-card">
+        <div class="strategy-card-header">
+          <div class="strategy-icon blue">🎯</div>
+          <div>
+            <div class="strategy-title">과거 구매 이력 이탈 기업</div>
+            <div class="strategy-count">7개 기업 · 즉시 영업 최우선</div>
+          </div>
+        </div>
+        <div class="strategy-body">
+          이미 상품 가치를 경험한 기업으로, <strong>재구매 확률이 가장 높은 그룹</strong>. 이탈 원인 파악 후 맞춤 접근이 필요합니다.
+        </div>
+        <ul class="strategy-steps">
+          <li>
+            <span class="step-num">STEP 1</span>
+            영업사원이 직접 컨택. 이탈 시점 전 마지막 공고의 수락 수 / 총지원자 데이터를 인용하여 효과 재환기
+          </li>
+          <li>
+            <span class="step-num">STEP 2</span>
+            "이전 구매 공고 이후 해당 직종군의 수락 추이"를 개인화 데이터로 제시 → 재구매 필요성 설득
+          </li>
+          <li>
+            <span class="step-num">STEP 3</span>
+            로그인 유도 이메일 발송 시 개인화 CTA 삽입: "귀사가 마지막으로 수락받은 인재 X명, 현재 XX명 추가 대기 중"
+          </li>
+        </ul>
+      </div>
+      <div class="strategy-card">
+        <div class="strategy-card-header">
+          <div class="strategy-icon green">📧</div>
+          <div>
+            <div class="strategy-title">미구매 이탈 기업</div>
+            <div class="strategy-count">297개 기업 · 이메일 + 영업 병행</div>
+          </div>
+        </div>
+        <div class="strategy-body">
+          서비스를 사용했지만 구매 전환 없이 이탈. <strong>수락 수 경험 유무</strong>를 기준으로 세분화하여 접근합니다.
+        </div>
+        <ul class="strategy-steps">
+          <li>
+            <span class="step-num">STEP 1</span>
+            이탈 기업 중 과거 수락 수 상위 기업 우선 추출 → 영업 타겟 리스트화 (수락 수 10건 이상 우선)
+          </li>
+          <li>
+            <span class="step-num">STEP 2</span>
+            이메일 발송: "귀사 공고에 수락한 X명의 이력서, 지금 확인하세요" 형태의 개인화 메시지. 로그인 후 기본정보 열람 가능 유도
+          </li>
+          <li>
+            <span class="step-num">STEP 3</span>
+            경쟁사에 현재 공고 게재 중인 기업과 자사 DB 교차 확인 → 이탈 기업이 타사 이용 중이라면 영업 우선순위 상향
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: ACTION LIST -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <span class="section-title">실무 액션 리스트</span>
+      <span class="section-subtitle">경영진 → 실무 지시 목록</span>
+    </div>
+    <div class="table-wrap" style="padding: 8px 0;">
+      <ul class="action-list" style="padding: 0 24px;">
+        <li class="action-item">
+          <span class="action-priority priority-now">즉시</span>
+          <div class="action-content">
+            <div class="action-title">재구매 기업 Top 15 영업 레퍼런스화</div>
+            <div class="action-desc">(주)위홈(11건), 스와치그룹코리아(9건), (주)시몬스디자인스튜디오(7건) 등 재구매 상위 기업의 사례를 영업 레퍼런스로 정리. 동일 업종 신규 영업 시 활용.</div>
+          </div>
+          <div class="action-owner">→ 영업그룹</div>
+        </li>
+        <li class="action-item">
+          <span class="action-priority priority-now">즉시</span>
+          <div class="action-content">
+            <div class="action-title">이탈 기업 중 과거 구매 이력 7개사 우선 컨택</div>
+            <div class="action-desc">영업사원 직접 컨택. 마지막 구매 공고 데이터(수락수, 총지원자) 개인화 자료 준비 후 재구매 제안.</div>
+          </div>
+          <div class="action-owner">→ 영업그룹</div>
+        </li>
+        <li class="action-item">
+          <span class="action-priority priority-now">즉시</span>
+          <div class="action-content">
+            <div class="action-title">방송·광고·문화 / 유통·물류 업종 경쟁사 크롤링 타겟 우선 배정</div>
+            <div class="action-desc">구매 전환율 11~12%대의 두 업종을 경쟁사 크롤링 결과와 교차하여 영업 1순위 리스트 확보. 자사 미가입 기업은 신규 가입 유도 동선 병행 설계.</div>
+          </div>
+          <div class="action-owner">→ 영업그룹</div>
+        </li>
+        <li class="action-item">
+          <span class="action-priority priority-soon">단기</span>
+          <div class="action-content">
+            <div class="action-title">온라인마케팅·마케팅기획 직종군 타겟 이메일 캠페인 설계</div>
+            <div class="action-desc">수락 수 Top 직종인 온라인마케팅(3,631건)·마케팅기획(3,506건) 관련 공고 보유 미구매 기업 추출. "해당 직종 수락 인재 X명 대기 중" 개인화 이메일 발송.</div>
+          </div>
+          <div class="action-owner">→ 마케팅팀</div>
+        </li>
+        <li class="action-item">
+          <span class="action-priority priority-soon">단기</span>
+          <div class="action-content">
+            <div class="action-title">수락 수 임계값 기반 인앱 구매 유도 트리거 설계</div>
+            <div class="action-desc">현재 BM에서 구매 기업 평균 수락 11.6건 데이터를 기반으로, 수락 5건 이상 시 "수락 인재 연락처 확인하기" CTA 노출 시점 설정 검토. 서비스 내 자연스러운 구매 동선 구현.</div>
+          </div>
+          <div class="action-owner">→ INC기획파트</div>
+        </li>
+        <li class="action-item">
+          <span class="action-priority priority-soon">단기</span>
+          <div class="action-content">
+            <div class="action-title">이탈 미구매 기업 대상 수락 인재 기회손실 재유입 이메일 집행</div>
+            <div class="action-desc">수락 수 10건 이상 이탈 미구매 기업 우선 추출. "귀사 공고에 수락한 인재 X명이 연락을 기다리고 있습니다" 형태의 기회손실 프레이밍으로 재유입 이메일 2~3단계 시퀀스 설계. 로그인 → 수락 인재 확인 → 기본정보 열람(구매) 전환 동선.</div>
+          </div>
+          <div class="action-owner">→ 마케팅팀 + 영업그룹</div>
+        </li>
+        <li class="action-item">
+          <span class="action-priority priority-plan">중기</span>
+          <div class="action-content">
+            <div class="action-title">현재 BM 가설 검증 데이터 재분석 (3개월 후)</div>
+            <div class="action-desc">현재 BM 적용 기간이 2개월로 짧아 표본 한계 존재. 2026.05 이후 누적 데이터로 수락→구매 상관관계 재검증 필요. 통계적 유의성 확보 후 세일 전략 고도화.</div>
+          </div>
+          <div class="action-owner">→ 데이터팀 + INC기획파트</div>
+        </li>
+        <li class="action-item">
+          <span class="action-priority priority-plan">중기</span>
+          <div class="action-content">
+            <div class="action-title">스마트매칭 BM 독립 가치 검증 및 상품 구조 재설계</div>
+            <div class="action-desc">현재BM 매출 증가는 스마트매칭 단품보다 공고등록 하단 채용광고 패키지 다양화에 기인. 스마트매칭 자체의 BM 가치를 독립적으로 증명하기 위해 단품 가격·혜택 재포지셔닝 및 상품 라인업 간소화 필요.</div>
+          </div>
+          <div class="action-owner">→ INC기획파트 + 영업그룹</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>인크루트 스마트매칭 이용기업 분석 보고서 v1.0</span>
+  <span>데이터 기준일: 2026.04.21 · 분석일: 2026.04.22 · CONFIDENTIAL</span>
+</div>
+
+<script>
+// DATA
+const job3Data = [
+  {rank:1, name:'영업관리', jobs:284, accepts:4104, bought:21},
+  {rank:2, name:'일반사무', jobs:229, accepts:4018, bought:11},
+  {rank:3, name:'온라인마케팅', jobs:239, accepts:3631, bought:25},
+  {rank:4, name:'마케팅기획', jobs:209, accepts:3506, bought:24},
+  {rank:5, name:'거래처(거래선)개발·관리', jobs:212, accepts:3066, bought:15},
+  {rank:6, name:'회계', jobs:198, accepts:3037, bought:10},
+  {rank:7, name:'브랜드마케팅', jobs:150, accepts:2742, bought:18},
+  {rank:8, name:'영업지원', jobs:192, accepts:2645, bought:15},
+  {rank:9, name:'일반영업', jobs:198, accepts:2328, bought:12},
+  {rank:10, name:'경영지원', jobs:88, accepts:2230, bought:5},
+  {rank:11, name:'사무보조', jobs:147, accepts:2228, bought:6},
+  {rank:12, name:'사무관리', jobs:138, accepts:2202, bought:7},
+  {rank:13, name:'사업기획', jobs:69, accepts:2011, bought:10},
+  {rank:14, name:'세무', jobs:151, accepts:1993, bought:8},
+  {rank:15, name:'총무', jobs:70, accepts:1973, bought:3},
+  {rank:16, name:'해외영업', jobs:92, accepts:1944, bought:9},
+  {rank:17, name:'일반기술영업', jobs:136, accepts:1747, bought:10},
+  {rank:18, name:'바이럴', jobs:107, accepts:1721, bought:10},
+  {rank:19, name:'법인영업', jobs:93, accepts:1705, bought:8},
+  {rank:20, name:'영업기획', jobs:91, accepts:1694, bought:10},
+];
+
+const repurchaseData = [
+  {rank:1, name:'(주)위홈', industry:'정보통신업', count:11, accepts:326, perJob:25.1},
+  {rank:2, name:'스와치그룹코리아', industry:'유통·물류·무역업', count:9, accepts:15, perJob:1.5},
+  {rank:3, name:'(주)시몬스디자인스튜디오', industry:'방송·광고·문화 서비스업', count:7, accepts:329, perJob:41.1},
+  {rank:4, name:'아젠컴', industry:'제조업', count:6, accepts:131, perJob:18.7},
+  {rank:5, name:'의료법인 창아의료재단', industry:'공공·의료·사회기반사업', count:6, accepts:1, perJob:0.1},
+  {rank:6, name:'(주)혜성테크윈', industry:'제조업', count:6, accepts:121, perJob:11.0},
+  {rank:7, name:'삼성물산(주)에버랜드리조트', industry:'방송·광고·문화 서비스업', count:5, accepts:11, perJob:1.8},
+  {rank:8, name:'주식회사 메디컬탑팀바이마케팅', industry:'전문·과학기술서비스업', count:5, accepts:170, perJob:24.3},
+  {rank:9, name:'(주)베릭', industry:'도매·소매업', count:5, accepts:80, perJob:11.4},
+  {rank:10, name:'(주)세이코퍼레이션', industry:'제조업', count:5, accepts:152, perJob:30.4},
+  {rank:11, name:'(주)디자인미다스', industry:'건설·토목업', count:5, accepts:130, perJob:11.8},
+  {rank:12, name:'(주)에어퍼스트', industry:'공공·의료·사회기반사업', count:4, accepts:245, perJob:27.2},
+  {rank:13, name:'(주)스테리코', industry:'전문·과학기술서비스업', count:4, accepts:28, perJob:5.6},
+  {rank:14, name:'주식회사 감사뮤즈', industry:'유통·물류·무역업', count:4, accepts:95, perJob:19.0},
+  {rank:15, name:'(주)에티포스', industry:'제조업', count:4, accepts:129, perJob:21.5},
+];
+
+// RENDER JOB3 TABLE
+const maxAccepts = 4104;
+const tbody3 = document.getElementById('job3-tbody');
+job3Data.forEach(d => {
+  const pct = (d.accepts / maxAccepts * 100).toFixed(0);
+  const badgeClass = d.rank === 1 ? 'top1' : d.rank === 2 ? 'top2' : d.rank === 3 ? 'top3' : '';
+  tbody3.innerHTML += `
+    <tr>
+      <td><span class="rank-badge ${badgeClass}">${d.rank}</span></td>
+      <td><strong>${d.name}</strong></td>
+      <td class="right mono">${d.jobs.toLocaleString()}</td>
+      <td>
+        <div class="bar-cell">
+          <div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div>
+          <span class="bar-val">${d.accepts.toLocaleString()}</span>
+        </div>
+      </td>
+      <td class="right mono">${d.bought}</td>
+    </tr>`;
+});
+
+// RENDER REPURCHASE TABLE
+const tbody_r = document.getElementById('repurchase-tbody');
+repurchaseData.forEach(d => {
+  const badgeClass = d.rank === 1 ? 'top1' : d.rank === 2 ? 'top2' : d.rank === 3 ? 'top3' : '';
+  const maxCount = 11;
+  const pct = (d.accepts / 329 * 100).toFixed(0);
+  tbody_r.innerHTML += `
+    <tr>
+      <td><span class="rank-badge ${badgeClass}">${d.rank}</span></td>
+      <td><strong>${d.name}</strong></td>
+      <td>${d.industry}</td>
+      <td class="right mono">${d.count}건</td>
+      <td>
+        <div class="bar-cell">
+          <div class="bar-bg"><div class="bar-fill green" style="width:${pct}%"></div></div>
+          <span class="bar-val">${d.accepts.toLocaleString()}</span>
+        </div>
+      </td>
+      <td class="right mono">${d.perJob}</td>
+    </tr>`;
+});
+
+// CHARTS
+Chart.defaults.color = '#4a5168';
+Chart.defaults.borderColor = '#dde1e9';
+Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+Chart.defaults.font.size = 11;
+
+// Chart 1: BM 구간별 전환율
+new Chart(document.getElementById('chartBM'), {
+  type: 'bar',
+  data: {
+    labels: ['선불유료\n(~01.29)', '무료전면공개\n(01.30~02.23)', '현재BM\n(02.24~)'],
+    datasets: [{
+      label: '구매 전환율 (%)',
+      data: [7.2, 4.7, 7.0],
+      backgroundColor: ['rgba(217,48,37,0.25)', 'rgba(196,121,0,0.2)', 'rgba(29,96,212,0.4)'],
+      borderColor: ['#d93025', '#c47900', '#1d60d4'],
+      borderWidth: 1,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, max: 10, ticks: { callback: v => v + '%' }, grid: { color: '#f0f2f5' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Chart 2: 구매여부별 평균 수락수
+new Chart(document.getElementById('chartAccept'), {
+  type: 'bar',
+  data: {
+    labels: ['전체기간-구매O', '전체기간-구매X', '현재BM-구매O', '현재BM-구매X'],
+    datasets: [{
+      label: '평균 수락수',
+      data: [13.7, 8.5, 11.6, 4.3],
+      backgroundColor: ['rgba(29,96,212,0.55)', 'rgba(100,110,135,0.2)', 'rgba(29,96,212,0.85)', 'rgba(100,110,135,0.15)'],
+      borderColor: ['#1d60d4', '#8891a8', '#1d60d4', '#8891a8'],
+      borderWidth: 1,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `평균 수락수: ${ctx.raw}건` } }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#f0f2f5' } },
+      x: { grid: { display: false }, ticks: { maxRotation: 15, font: { size: 9 } } }
+    }
+  }
+});
+
+// Chart 3: 월별 전체 실매출 추이 (상품명 기준)
+const months = ['24.09','24.10','24.11','24.12','25.01','25.02','25.03','25.04','25.05','25.06','25.07','25.08','25.09','25.10','25.11','25.12','26.01','26.02','26.03','26.04'];
+new Chart(document.getElementById('chartMonthly'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      {
+        label: '채용광고(결합상품)',
+        data: [3835541,4902270,4850865,4405605,4486321,6996158,5529689,3033058,4863591,4167430,5385843,3389971,3062238,2844220,4510659,4597586,4665851,1432549,2576594,2219774],
+        backgroundColor: 'rgba(120,140,180,0.6)',
+        borderWidth: 0, borderRadius: 2, stack: 'rev',
+      },
+      {
+        label: '스마트오퍼',
+        data: [271000,451308,907059,649686,669222,1036839,1120594,1527593,424170,1873673,1237500,1168861,1531973,377042,211668,474814,90000,62728,80000,0],
+        backgroundColor: 'rgba(217,48,37,0.55)',
+        borderWidth: 0, borderRadius: 2, stack: 'rev',
+      },
+      {
+        label: '스마트매칭 계열',
+        data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1084081,357273,1652910,991532],
+        backgroundColor: 'rgba(29,96,212,0.75)',
+        borderWidth: 0, borderRadius: 2, stack: 'rev',
+      },
+      {
+        label: '채용패키지Pro',
+        data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,976896,3329033,1385111],
+        backgroundColor: 'rgba(0,149,110,0.7)',
+        borderWidth: 0, borderRadius: 2, stack: 'rev',
+      },
+      {
+        label: '채용패키지',
+        data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1195263,2143376,2560052,2674564],
+        backgroundColor: 'rgba(196,121,0,0.6)',
+        borderWidth: 0, borderRadius: 2, stack: 'rev',
+      },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 10 }, boxWidth: 12, padding: 12 } },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.dataset.label}: ${(ctx.raw/10000).toFixed(0)}만원`,
+          footer: items => `합계: ${(items.reduce((s,i)=>s+i.raw,0)/10000).toFixed(0)}만원`
+        }
+      }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { size: 9 } } },
+      y: { stacked: true, grid: { color: '#f0f2f5' }, ticks: { callback: v => (v/10000).toFixed(0)+'만' } }
+    }
+  }
+});
+
+</script>
+</body>
+</html>
